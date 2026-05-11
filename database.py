@@ -116,7 +116,7 @@ def add_sku(article_code, article_desc):
     finally:
         conn.close()
 
-def create_claim(client_id, client_name, reason, region, articles):
+def create_claim(client_id, client_name, reason, region, salesperson, articles):
     conn = get_connection()
     cursor = conn.cursor()
     now = datetime.now().isoformat()

@@ -1,6 +1,6 @@
 MOTIVOS_RECLAMO = {
     "Faltante de mercadería": {
-        "Flow Habitual": ["rto", "sku", "dpc", "nc"],
+        "Con Nota de Crédito": ["rto", "sku", "dpc", "nc"],
         "Reposición (Remito Manual)": ["rto_manual", "sku"]
     },
     "Sobrantes": {
