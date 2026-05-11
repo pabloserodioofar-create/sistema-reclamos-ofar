@@ -9,6 +9,16 @@ def render():
     # Init session state for dynamic articles
     if 'temp_articles' not in st.session_state:
         st.session_state.temp_articles = []
+
+    # Callback function to clear the form
+    def clear_form():
+        st.session_state.client_selector = "Seleccione un cliente..."
+        st.session_state.category_selector = "Seleccione una categoría..."
+        if "subcategory_selector" in st.session_state:
+            st.session_state.subcategory_selector = "Seleccione un motivo..."
+        if "sku_selector" in st.session_state:
+            st.session_state.sku_selector = "Seleccione un artículo..."
+        st.session_state.temp_articles = []
         
     df_clients = get_clients()
     df_skus = get_skus()
@@ -115,24 +125,11 @@ def render():
                         articles=st.session_state.temp_articles
                     )
                     
-                    # Clear session state and widgets
-                    st.session_state.temp_articles = []
-                    st.session_state.client_selector = "Seleccione un cliente..."
-                    st.session_state.category_selector = "Seleccione una categoría..."
-                    if "subcategory_selector" in st.session_state:
-                        st.session_state.subcategory_selector = "Seleccione un motivo..."
-                    
                     st.success(f"✅ Reclamo #{claim_id} generado exitosamente y se encuentra en estado Pendiente.")
                     st.balloons()
-                    st.rerun() # Refresh to clear form
+                    # We don't clear immediately to allow the user to see the success message
+                    # But we provide the clear button or they can just refresh
+                    st.info("Haga clic en 'Limpiar Formulario' para cargar un nuevo reclamo.")
         
         with col_clear:
-            if st.button("🧹 Limpiar Formulario", use_container_width=True):
-                st.session_state.client_selector = "Seleccione un cliente..."
-                st.session_state.category_selector = "Seleccione una categoría..."
-                if "subcategory_selector" in st.session_state:
-                    st.session_state.subcategory_selector = "Seleccione un motivo..."
-                if "sku_selector" in st.session_state:
-                    st.session_state.sku_selector = "Seleccione un artículo..."
-                st.session_state.temp_articles = []
-                st.rerun()
+            st.button("🧹 Limpiar Formulario", use_container_width=True, on_click=clear_form)
