@@ -24,7 +24,7 @@ def render():
         st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.subheader("Datos del Reclamo")
         
-        selected_client_str = st.selectbox("Cliente", client_list)
+        selected_client_str = st.selectbox("Cliente", client_list, key="client_selector")
         
         # Auto-region and salesperson logic
         determined_region = "AMBA"
@@ -43,14 +43,14 @@ def render():
         
         # Hierarchical Motivo Selection
         categorias = list(MOTIVOS_RECLAMO.keys())
-        selected_category = st.selectbox("Categoría de Reclamo", ["Seleccione una categoría..."] + categorias)
+        selected_category = st.selectbox("Categoría de Reclamo", ["Seleccione una categoría..."] + categorias, key="category_selector")
         
         selected_motivo = "Seleccione un motivo..."
         requires_sku = False
         
         if selected_category != "Seleccione una categoría...":
             sub_motivos = list(MOTIVOS_RECLAMO[selected_category].keys())
-            selected_sub = st.selectbox("Motivo Específico", ["Seleccione un motivo..."] + sub_motivos)
+            selected_sub = st.selectbox("Motivo Específico", ["Seleccione un motivo..."] + sub_motivos, key="subcategory_selector")
             
             if selected_sub != "Seleccione un motivo...":
                 selected_motivo = f"{selected_category} - {selected_sub}"
@@ -115,8 +115,12 @@ def render():
                         articles=st.session_state.temp_articles
                     )
                     
-                    # Clear session state
+                    # Clear session state and widgets
                     st.session_state.temp_articles = []
+                    st.session_state.client_selector = "Seleccione un cliente..."
+                    st.session_state.category_selector = "Seleccione una categoría..."
+                    if "subcategory_selector" in st.session_state:
+                        st.session_state.subcategory_selector = "Seleccione un motivo..."
                     
                     st.success(f"✅ Reclamo #{claim_id} generado exitosamente y se encuentra en estado Pendiente.")
                     st.balloons()
@@ -124,5 +128,11 @@ def render():
         
         with col_clear:
             if st.button("🧹 Limpiar Formulario", use_container_width=True):
+                st.session_state.client_selector = "Seleccione un cliente..."
+                st.session_state.category_selector = "Seleccione una categoría..."
+                if "subcategory_selector" in st.session_state:
+                    st.session_state.subcategory_selector = "Seleccione un motivo..."
+                if "sku_selector" in st.session_state:
+                    st.session_state.sku_selector = "Seleccione un artículo..."
                 st.session_state.temp_articles = []
                 st.rerun()
