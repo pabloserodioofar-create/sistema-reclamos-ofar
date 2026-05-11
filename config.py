@@ -24,13 +24,13 @@ MOTIVOS_RECLAMO = {
         "Entregas no correspondientes a cliente": ["reclamo", "seguimiento"]
     },
     "Devoluciones": {
-        "Próximos a Vencer": ["or_number", "dpc", "nc"],
-        "Error EAN": ["rto", "or_number", "dpc", "nc"],
-        "No pedidos a comercial": ["rto", "or_number", "dpc", "nc"],
-        "Sobre stock": ["rto", "or_number", "dpc", "nc"],
-        "Sobrantes": ["rto", "or_number", "dpc"],
-        "Roturas/ daños": ["rto", "nic", "or_number", "reclamo", "dpc", "nc"],
-        "Mal estado, Ingresos a CC": ["rto", "or_number", "dpc", "nc"]
+        "Próximos a Vencer": ["or_number", "sku", "dpc", "nc"],
+        "Error EAN": ["rto", "or_number", "sku", "dpc", "nc"],
+        "No pedidos a comercial": ["rto", "or_number", "sku", "dpc", "nc"],
+        "Sobre stock": ["rto", "or_number", "sku", "dpc", "nc"],
+        "Sobrantes": ["rto", "or_number", "sku", "dpc"],
+        "Roturas/ daños": ["rto", "nic", "or_number", "sku", "reclamo", "dpc", "nc"],
+        "Mal estado, Ingresos a CC": ["rto", "or_number", "sku", "dpc", "nc"]
     },
     "Por solicitud": {
         "NC": ["resolucion_solicitud"],
