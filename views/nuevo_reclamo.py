@@ -95,26 +95,34 @@ def render():
             st.markdown('</div><br>', unsafe_allow_html=True)
             
         st.write("")
-        if st.button("🚀 Generar Reclamo", type="primary", use_container_width=True):
-            if selected_client_str == "Seleccione un cliente..." or selected_motivo == "Seleccione un motivo...":
-                st.error("Por favor, seleccione un cliente y un motivo.")
-            elif requires_sku and len(st.session_state.temp_articles) == 0:
-                st.error("Por favor, agregue al menos un artículo, ya que el motivo lo requiere.")
-            else:
-                c_id = selected_client_str.split(" - ")[0]
-                c_name = selected_client_str.split(" - ", 1)[1]
-                
-                claim_id = create_claim(
-                    client_id=c_id,
-                    client_name=c_name,
-                    reason=selected_motivo,
-                    region=determined_region,
-                    salesperson=selected_salesperson,
-                    articles=st.session_state.temp_articles
-                )
-                
-                # Clear session state
+        col_gen, col_clear = st.columns([3, 1])
+        with col_gen:
+            if st.button("🚀 Generar Reclamo", type="primary", use_container_width=True):
+                if selected_client_str == "Seleccione un cliente..." or selected_motivo == "Seleccione un motivo...":
+                    st.error("Por favor, seleccione un cliente y un motivo.")
+                elif requires_sku and len(st.session_state.temp_articles) == 0:
+                    st.error("Por favor, agregue al menos un artículo, ya que el motivo lo requiere.")
+                else:
+                    c_id = selected_client_str.split(" - ")[0]
+                    c_name = selected_client_str.split(" - ", 1)[1]
+                    
+                    claim_id = create_claim(
+                        client_id=c_id,
+                        client_name=c_name,
+                        reason=selected_motivo,
+                        region=determined_region,
+                        salesperson=selected_salesperson,
+                        articles=st.session_state.temp_articles
+                    )
+                    
+                    # Clear session state
+                    st.session_state.temp_articles = []
+                    
+                    st.success(f"✅ Reclamo #{claim_id} generado exitosamente y se encuentra en estado Pendiente.")
+                    st.balloons()
+                    st.rerun() # Refresh to clear form
+        
+        with col_clear:
+            if st.button("🧹 Limpiar Formulario", use_container_width=True):
                 st.session_state.temp_articles = []
-                
-                st.success(f"✅ Reclamo #{claim_id} generado exitosamente y se encuentra en estado Pendiente.")
-                st.balloons()
+                st.rerun()
